@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/coryrobinson/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/linux_parser.cpp
+dirent.h
+-
+unistd.h
+-
+string
+-
+vector
+-
+sstream
+-
+linux_parser.h
+/Users/coryrobinson/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/linux_parser.h
+
+include/linux_parser.h
+fstream
+-
+regex
+-
+string
+-
+
