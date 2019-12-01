@@ -28,6 +28,7 @@ CMakeFiles/monitor.dir/src/processor.cpp.o
  include/processor.h
 CMakeFiles/monitor.dir/src/system.cpp.o
  /Users/coryrobinson/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/system.cpp
+ include/linux_parser.h
  include/process.h
  include/processor.h
  include/system.h

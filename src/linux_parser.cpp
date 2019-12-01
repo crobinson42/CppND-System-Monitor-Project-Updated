@@ -206,11 +206,12 @@ int LinuxParser::TotalProcesses() {
 
         while (std::getline(stream, line)) {
             string lineText{};
+            std::istringstream linestream(line);
 
-            line >> lineText;
+            linestream >> lineText;
 
-            if (lineText == 'processes') {
-                lineText >> processesTotal;
+            if (lineText == "processes") {
+                linestream >> processesTotal;
             }
         }
     }
@@ -230,11 +231,12 @@ int LinuxParser::RunningProcesses() {
 
         while (std::getline(stream, line)) {
             string lineText{};
+            std::istringstream linestream(line);
 
-            line >> lineText;
+            linestream >> lineText;
 
-            if (lineText == 'procs_running') {
-                lineText >> procsRunning;
+            if (lineText == "procs_running") {
+                linestream >> procsRunning;
             }
         }
     }
