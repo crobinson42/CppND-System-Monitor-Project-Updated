@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <iostream>
 
 #include "linux_parser.h"
 
@@ -43,7 +44,7 @@ string LinuxParser::Kernel() {
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
-    linestream >> os >> kernel;
+    linestream >> os >> kernel >> kernel;
   }
   return kernel;
 }
@@ -97,7 +98,7 @@ float LinuxParser::MemoryUtilization() {
 //        memAvailStream >> _ >> avail;
     }
 
-    used = (stoi(total) - stoi(free)) / stoi(total);
+    used = (stof(total) - stof(free)) / stof(total);
 
     return used;
 }
@@ -192,7 +193,7 @@ long LinuxParser::IdleJiffies() {
 }
 
 // TODO: Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() { return {}; }
+vector<string> LinuxParser::CpuUtilization() { return {"1","2","5","6"}; }
 
 // TODO: Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
