@@ -143,7 +143,7 @@ long LinuxParser::ActiveJiffies(int pid) {
     string _;
     long active = 0;
 
-    std::ifstream stream(kProcDirectory + to_string(pid) + kStatFilename);
+    std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
 
     if (stream.is_open()) {
         string line;
@@ -250,7 +250,7 @@ string LinuxParser::Command(int pid) {
     string line;
     string cmd;
 
-    std::ifstream cmdlineStream(kProcDirectory + std::to_string(pid) + "cmdline");
+    std::ifstream cmdlineStream(kProcDirectory + std::to_string(pid) + "/cmdline");
 
     if (cmdlineStream.is_open()) {
         std::getline(cmdlineStream, line);
@@ -275,11 +275,11 @@ string LinuxParser::Ram(int pid) {
         memTotalStream >> _ >> systemTotalMem;
     }
 
-    string memUsed;
+    string memUsed = "0";
     float used = 0.0;
 
     // /proc/[pid]/statm
-    std::ifstream pidStream(kProcDirectory + std::to_string(pid) + "statm");
+    std::ifstream pidStream(kProcDirectory + std::to_string(pid) + "/statm");
 
     if (stream.is_open()) {
         string line;
@@ -291,7 +291,8 @@ string LinuxParser::Ram(int pid) {
     // LinuxParser::TotalMemory
     used = (1.0 * stol(memUsed)) / (1.0 * std::stoi(systemTotalMem));
 
-    return std::to_string(used * 100) + "%";
+//    return std::to_string(used * 100) + "%";
+    return std::to_string(used);
 }
 
 // TODO: Read and return the user ID associated with a process
@@ -299,7 +300,7 @@ string LinuxParser::Uid(int pid) {
     string uid;
 
     // /proc/[pid]/loginuid
-    std::ifstream stream(kProcDirectory + std::to_string(pid) + "loginuid");
+    std::ifstream stream(kProcDirectory + std::to_string(pid) + "/loginuid");
 
     if (stream.is_open()) {
         string line;
@@ -312,16 +313,17 @@ string LinuxParser::Uid(int pid) {
 }
 
 // TODO: Read and return the user associated with a process
-string LinuxParser::User(int pid) {
+string LinuxParser::User(int pid[[maybe_unused]]) {
     // todo: where is the user name directory to map a uid to?
-    return std::to_string(pid);
+//    return std::to_string(pid);
+    return "";
 }
 
 // TODO: Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) {
     long starttime;
 
-    std::ifstream stream(kProcDirectory + std::to_string(pid) + "stat");
+    std::ifstream stream(kProcDirectory + std::to_string(pid) + "/stat");
 
     if (stream.is_open()) {
         string line;
