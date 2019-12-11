@@ -24,17 +24,24 @@ vector<Process>& System::Processes() {
 
     processes_.clear();
 
-    for (int& i : pids) {
-      Process process(
-          i,
-          LinuxParser::User(i),
-          LinuxParser::Command(i),
-          LinuxParser::ActiveJiffies(i),
-          LinuxParser::Ram(i),
-          LinuxParser::UpTime(i)
-      );
+    // todo: add Process operator overload to sort processes by highest memory usage
+    std::reverse(pids.begin(), pids.end());
 
-      processes_.push_back(process);
+    for (int& i : pids) {
+      bool processAlreadyExists(false);
+
+      for (Process& p : processes_){
+       if (p.Pid() == i) {
+         processAlreadyExists = true;
+         break;
+       }
+      }
+
+      if (!processAlreadyExists) {
+        Process process(i);
+
+        processes_.push_back(process);
+      }
     }
 
     return processes_;

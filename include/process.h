@@ -8,7 +8,7 @@ It contains relevant attributes as shown below
 */
 class Process {
  public:
-  Process(int pid, std::string user, std::string cmd, float cpu, std::string ram, long utime);
+  Process(int pid);
 
   int Pid();                               // TODO: See src/process.cpp
   std::string User();                      // TODO: See src/process.cpp
@@ -21,11 +21,10 @@ class Process {
   // TODO: Declare any necessary private members
  private:
   int pid;
-  std::string user;
-  std::string cmd;
-  float cpu;
-  std::string ram;
-  long int utime;
+  long seconds;
+  long total_time;
+  long previousActiveJiffies;
+  long prevSystemIdle;
 };
 
 #endif

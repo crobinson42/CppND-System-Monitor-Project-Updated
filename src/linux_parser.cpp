@@ -140,8 +140,8 @@ long LinuxParser::Jiffies() {
 
 // TODO: Read and return the number of active jiffies for a PID
 long LinuxParser::ActiveJiffies(int pid) {
-    string _;
-    long active = 0;
+    long utime = 0;
+    long stime = 0;
 
     std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
 
@@ -149,11 +149,15 @@ long LinuxParser::ActiveJiffies(int pid) {
         string line;
         std::getline(stream, line);
         std::stringstream lineStream(line);
-        // example line:  "1000 (bash) S 993"
-        lineStream >> _ >> _ >> _ >> active;
+        for (int i = 1; i <= 14; i++) {
+          lineStream >> utime;
+        }
+        for (int i = 1; i <= 15; i++) {
+          lineStream >> stime;
+        }
     }
 
-    return active;
+    return utime + stime;
 }
 
 // TODO: Read and return the number of active jiffies for the system
@@ -314,14 +318,12 @@ string LinuxParser::Uid(int pid) {
 
 // TODO: Read and return the user associated with a process
 string LinuxParser::User(int pid[[maybe_unused]]) {
-    // todo: where is the user name directory to map a uid to?
-//    return std::to_string(pid);
     return "";
 }
 
 // TODO: Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) {
-    long starttime;
+    string starttime;
 
     std::ifstream stream(kProcDirectory + std::to_string(pid) + "/stat");
 
@@ -336,5 +338,5 @@ long LinuxParser::UpTime(int pid) {
         }
     }
 
-    return starttime;
+    return std::stol(starttime);
 }

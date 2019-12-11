@@ -6,27 +6,31 @@
 
 #IncludeRegexTransform: 
 
-/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/linux_parser.cpp
-dirent.h
--
+/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/process.cpp
 unistd.h
+-
+cctype
+-
+sstream
 -
 string
 -
 vector
 -
-sstream
--
-iostream
--
 linux_parser.h
 /mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/linux_parser.h
+process.h
+/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/process.h
 
 include/linux_parser.h
 fstream
 -
 regex
 -
+string
+-
+
+include/process.h
 string
 -
 
