@@ -13,6 +13,28 @@ using std::string;
 using std::to_string;
 using std::vector;
 
+long LinuxParser::CpuTotalTime() {
+  long total = 0;
+
+  std::ifstream stream(kProcDirectory + kStatFilename);
+
+  if (stream.is_open()) {
+    string line;
+    std::getline(stream, line);
+    std::stringstream lineStream(line);
+
+    string v;
+
+    lineStream >> v; // get rid of the first string "cpu"
+
+    while (lineStream >> v) {
+      total += stol(v);
+    }
+  }
+
+  return total;
+}
+
 // DONE: An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
   string line;
@@ -140,24 +162,27 @@ long LinuxParser::Jiffies() {
 
 // TODO: Read and return the number of active jiffies for a PID
 long LinuxParser::ActiveJiffies(int pid) {
-    long utime = 0;
-    long stime = 0;
+    string utime = "0";
+    string stime = "0";
 
     std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
 
     if (stream.is_open()) {
         string line;
+        string _;
         std::getline(stream, line);
         std::stringstream lineStream(line);
-        for (int i = 1; i <= 14; i++) {
-          lineStream >> utime;
-        }
         for (int i = 1; i <= 15; i++) {
-          lineStream >> stime;
+          if (i == 14)
+            lineStream >> utime;
+          if (i == 15)
+            lineStream >> stime;
+          else
+            lineStream >> _;
         }
     }
 
-    return utime + stime;
+    return std::stol(utime) + std::stol(stime);
 }
 
 // TODO: Read and return the number of active jiffies for the system
