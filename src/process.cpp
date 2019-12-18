@@ -1,4 +1,4 @@
-#include <unistd.h>
+#include <regex>
 #include <cctype>
 #include <sstream>
 #include <string>
@@ -12,7 +12,28 @@ using std::string;
 using std::to_string;
 using std::vector;
 
-Process::Process(int pid) : pid(pid) {};
+Process::Process(int pid) : pid(pid) {
+  uid = LinuxParser::Uid(pid);
+  user = Process::UidName();
+};
+
+string Process::UidName() {
+  string username;
+
+  // /proc/[pid]/loginuid
+  std::ifstream stream(LinuxParser::kProcDirectory + std::to_string(uid) + LinuxParser::kPasswordPath);
+
+  if (stream.is_open()) {
+    string line;
+    std::getline(stream, line);
+
+    if (std::regex_match(line, std::regex(":" + std::to_string(uid) + ":"))) {
+      username = line.substr(0, line.find(":"));
+    }
+  }
+
+  return std::to_string(uid);
+};
 
 // TODO: Return this process's ID
 int Process::Pid() const { return pid; }
@@ -40,12 +61,12 @@ string Process::Command() { return LinuxParser::Command(Pid()); }
 string Process::Ram() const { return LinuxParser::Ram(Pid()); }
 
 // TODO: Return the user (name) that generated this process
-string Process::User() { return LinuxParser::Ram(Pid()); }
+string Process::User() { return user; }
 
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() { return LinuxParser::UpTime(Pid()); }
 
 // TODO: Overload the "less than" comparison operator for Process objects
 bool Process::operator<(Process const& a) const {
-  return std::stof(Ram()) > std::stof(a.Ram());
+  return std::stof(a.Ram()) < std::stof(Ram());
 }

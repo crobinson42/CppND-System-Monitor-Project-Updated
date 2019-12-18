@@ -221,9 +221,6 @@ long LinuxParser::IdleJiffies() {
     return idle;
 }
 
-// TODO: Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() { return {"1","2","5","6"}; }
-
 // TODO: Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
     string _;
@@ -279,7 +276,7 @@ string LinuxParser::Command(int pid) {
     string line;
     string cmd;
 
-    std::ifstream cmdlineStream(kProcDirectory + std::to_string(pid) + "/cmdline");
+    std::ifstream cmdlineStream(kProcDirectory + std::to_string(pid) + kCmdlineFilename);
 
     if (cmdlineStream.is_open()) {
         std::getline(cmdlineStream, line);
@@ -292,25 +289,12 @@ string LinuxParser::Command(int pid) {
 
 // TODO: Read and return the memory used by a process
 string LinuxParser::Ram(int pid) {
-    string _, systemTotalMem;
-
-    std::ifstream stream(kProcDirectory + kMeminfoFilename);
-
-    if (stream.is_open()) {
-        string _;
-        string MemTotalLine;
-        std::getline(stream, MemTotalLine);
-        std::stringstream memTotalStream(MemTotalLine);
-        memTotalStream >> _ >> systemTotalMem;
-    }
-
     string memUsed = "0";
-    float used = 0.0;
 
     // /proc/[pid]/statm
-    std::ifstream pidStream(kProcDirectory + std::to_string(pid) + "/statm");
+    std::ifstream pidStream(kProcDirectory + std::to_string(pid) + kStatMFilename);
 
-    if (stream.is_open()) {
+    if (pidStream.is_open()) {
         string line;
         std::getline(pidStream, line);
         std::stringstream lineStream(line);
@@ -318,18 +302,20 @@ string LinuxParser::Ram(int pid) {
     }
 
     // LinuxParser::TotalMemory
-    used = (1.0 * stol(memUsed)) / (1.0 * std::stoi(systemTotalMem));
+    float memUsedMbDecimal = (1.0 * stol(memUsed)) / 1000000;
 
-//    return std::to_string(used * 100) + "%";
-    return std::to_string(used);
+    float value = (int)(memUsedMbDecimal * 100);
+    memUsed = std::to_string((float)value / 100);
+
+    return  memUsed;
 }
 
 // TODO: Read and return the user ID associated with a process
-string LinuxParser::Uid(int pid) {
+int LinuxParser::Uid(int pid) {
     string uid;
 
     // /proc/[pid]/loginuid
-    std::ifstream stream(kProcDirectory + std::to_string(pid) + "/loginuid");
+    std::ifstream stream(kProcDirectory + std::to_string(pid) + kLoginUidFilename);
 
     if (stream.is_open()) {
         string line;
@@ -338,19 +324,20 @@ string LinuxParser::Uid(int pid) {
         lineStream >> uid;
     }
 
-    return uid;
+    //    return std::stoi(uid);
+    return 1000;
 }
 
 // TODO: Read and return the user associated with a process
 string LinuxParser::User(int pid[[maybe_unused]]) {
-    return "";
+    return "root";
 }
 
 // TODO: Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) {
     string starttime;
 
-    std::ifstream stream(kProcDirectory + std::to_string(pid) + "/stat");
+    std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
 
     if (stream.is_open()) {
         string line;

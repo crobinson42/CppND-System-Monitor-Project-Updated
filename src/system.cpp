@@ -18,8 +18,8 @@ using std::vector;
 // TODO: Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
-bool c(Process p1, Process p2) {
-  return (p1 < p2);
+bool compareProcess(Process p1, Process p2) {
+  return (p1.Ram() > p2.Ram());
 }
 
 // TODO: Return a container composed of the system's processes
@@ -27,9 +27,6 @@ vector<Process>& System::Processes() {
     vector<int> pids = LinuxParser::Pids();
 
     processes_.clear();
-
-    // todo: add Process operator overload to sort processes by highest memory usage
-//    std::reverse(pids.begin(), pids.end());
 
     for (int& i : pids) {
       bool processAlreadyExists(false);
@@ -48,7 +45,7 @@ vector<Process>& System::Processes() {
       }
     }
 
-  sort(processes_.begin(), processes_.end(), c);
+  sort(processes_.begin(), processes_.end(), compareProcess);
 
   return processes_;
 }
