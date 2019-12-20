@@ -6,13 +6,49 @@
 
 #IncludeRegexTransform: 
 
-/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/format.cpp
+/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/system.cpp
+unistd.h
+-
+cstddef
+-
+set
+-
 string
 -
-format.h
-/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/format.h
+vector
+-
+iostream
+-
+linux_parser.h
+/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/linux_parser.h
+process.h
+/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/process.h
+processor.h
+/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/processor.h
+system.h
+/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/system.h
 
-include/format.h
+include/linux_parser.h
+fstream
+-
+regex
+-
 string
 -
+
+include/process.h
+string
+-
+
+include/processor.h
+
+include/system.h
+string
+-
+vector
+-
+process.h
+include/process.h
+processor.h
+include/processor.h
 

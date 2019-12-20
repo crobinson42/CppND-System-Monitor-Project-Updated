@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <regex>
 
 #include "linux_parser.h"
 
@@ -324,13 +325,36 @@ int LinuxParser::Uid(int pid) {
         lineStream >> uid;
     }
 
-    //    return std::stoi(uid);
-    return 1000;
+  int uidInt;
+
+  // https://stackoverflow.com/questions/22914627/some-uids-in-proc-pid-loginuid-are-strange
+  try {
+    uidInt = std::stoi(uid);
+  } catch (...) {
+    uidInt = 1000;
+  }
+
+  return uidInt;
 }
 
 // TODO: Read and return the user associated with a process
-string LinuxParser::User(int pid[[maybe_unused]]) {
-    return "root";
+string LinuxParser::User(int uid) {
+  string username;
+
+  // /proc/[pid]/loginuid
+  std::ifstream stream(LinuxParser::kPasswordPath);
+
+  if (stream.is_open()) {
+    string line; // Example Line >> osboxes:x:1000:1000:osboxes.org,,,:/home/osboxes:/bin/bash
+
+    while (std::getline(stream, line) && username.empty()) {
+      if (std::regex_search(line, std::regex(":" + std::to_string(uid) + ":"))) {
+        username = line.substr(0, line.find(":"));
+      }
+    }
+  }
+
+  return username;
 }
 
 // TODO: Read and return the uptime of a process

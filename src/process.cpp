@@ -14,26 +14,26 @@ using std::vector;
 
 Process::Process(int pid) : pid(pid) {
   uid = LinuxParser::Uid(pid);
-  user = Process::UidName();
+  user = LinuxParser::User(uid);
 };
 
-string Process::UidName() {
-  string username;
-
-  // /proc/[pid]/loginuid
-  std::ifstream stream(LinuxParser::kProcDirectory + std::to_string(uid) + LinuxParser::kPasswordPath);
-
-  if (stream.is_open()) {
-    string line;
-    std::getline(stream, line);
-
-    if (std::regex_match(line, std::regex(":" + std::to_string(uid) + ":"))) {
-      username = line.substr(0, line.find(":"));
-    }
-  }
-
-  return std::to_string(uid);
-};
+//string Process::UidName() {
+//  string username;
+//
+//  // /proc/[pid]/loginuid
+//  std::ifstream stream(LinuxParser::kProcDirectory + std::to_string(uid) + LinuxParser::kPasswordPath);
+//
+//  if (stream.is_open()) {
+//    string line;
+//    std::getline(stream, line);
+//
+//    if (std::regex_match(line, std::regex(":" + std::to_string(uid) + ":"))) {
+//      username = line.substr(0, line.find(":"));
+//    }
+//  }
+//
+//  return std::to_string(uid);
+//};
 
 // TODO: Return this process's ID
 int Process::Pid() const { return pid; }
