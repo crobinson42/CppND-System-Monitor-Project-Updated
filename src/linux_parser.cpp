@@ -293,22 +293,23 @@ string LinuxParser::Ram(int pid) {
     string memUsed = "0";
 
     // /proc/[pid]/statm
-    std::ifstream pidStream(kProcDirectory + std::to_string(pid) + kStatMFilename);
+    std::ifstream pidStream(kProcDirectory + std::to_string(pid) + kStatusFilename);
 
     if (pidStream.is_open()) {
-        string line;
-        std::getline(pidStream, line);
-        std::stringstream lineStream(line);
-        lineStream >> memUsed;
+      string line, key, value;
+
+      while (std::getline(pidStream, line)) {
+        std::istringstream linestream(line);
+
+        while (linestream >> key >> value) {
+          if (key == "VmSize:") {
+            return value;
+          }
+        }
+      }
     }
 
-    // LinuxParser::TotalMemory
-    float memUsedMbDecimal = (1.0 * stol(memUsed)) / 1000000;
-
-    float value = (int)(memUsedMbDecimal * 100);
-    memUsed = std::to_string((float)value / 100);
-
-    return  memUsed;
+    return memUsed;
 }
 
 // TODO: Read and return the user ID associated with a process
