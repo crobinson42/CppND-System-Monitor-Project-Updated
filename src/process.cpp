@@ -17,24 +17,6 @@ Process::Process(int pid) : pid(pid) {
   user = LinuxParser::User(uid);
 };
 
-//string Process::UidName() {
-//  string username;
-//
-//  // /proc/[pid]/loginuid
-//  std::ifstream stream(LinuxParser::kProcDirectory + std::to_string(uid) + LinuxParser::kPasswordPath);
-//
-//  if (stream.is_open()) {
-//    string line;
-//    std::getline(stream, line);
-//
-//    if (std::regex_match(line, std::regex(":" + std::to_string(uid) + ":"))) {
-//      username = line.substr(0, line.find(":"));
-//    }
-//  }
-//
-//  return std::to_string(uid);
-//};
-
 // TODO: Return this process's ID
 int Process::Pid() const { return pid; }
 
@@ -43,7 +25,7 @@ float Process::CpuUtilization() {
     long  uptime = LinuxParser::CpuTotalTime();
     long activeJiffies = LinuxParser::ActiveJiffies(Pid());
 
-    // todo: calculate used cpu against system total jiffies
+    // calculate used cpu against system total jiffies
     float used = ((1.0 * activeJiffies - previousActiveJiffies) / (1.0 * uptime - prevSystemIdle));
     previousActiveJiffies = activeJiffies;
     prevSystemIdle = uptime;

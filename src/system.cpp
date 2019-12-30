@@ -19,7 +19,7 @@ using std::vector;
 Processor& System::Cpu() { return cpu_; }
 
 bool compareProcess(Process p1, Process p2) {
-  return (p1.CpuUtilization() > p2.CpuUtilization());
+    return (p1.CpuUtilization() > p2.CpuUtilization());
 }
 
 // TODO: Return a container composed of the system's processes
@@ -27,22 +27,9 @@ vector<Process>& System::Processes() {
     vector<int> pids = LinuxParser::Pids();
 
     for (int& i : pids) {
-      bool processAlreadyExists(false);
-
-      for (Process& p : processes_){
-       if (p.Pid() == i) {
-         processAlreadyExists = true;
-         break;
-       }
-      }
-
-      if (!processAlreadyExists) {
         Process process(i);
 
         processes_.push_back(process);
-      } else {
-
-      }
     }
 
   sort(processes_.begin(), processes_.end(), compareProcess);
