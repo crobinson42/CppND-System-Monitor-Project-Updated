@@ -19,7 +19,7 @@ using std::vector;
 Processor& System::Cpu() { return cpu_; }
 
 bool compareProcess(Process p1, Process p2) {
-    return (p1.CpuUtilization() > p2.CpuUtilization());
+    return (std::stoi(p1.Ram()) > std::stoi(p2.Ram()));
 }
 
 // TODO: Return a container composed of the system's processes

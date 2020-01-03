@@ -360,7 +360,7 @@ string LinuxParser::User(int uid) {
 
 // TODO: Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) {
-    string starttime;
+    string starttime = "0";
 
     std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
 
@@ -370,10 +370,14 @@ long LinuxParser::UpTime(int pid) {
         std::istringstream lineStream(line);
 
         // value #22 in line is time in jiffies since system started
-        for (int i = 1; i <= 22; i++) {
+        for (int i = 0; i <= 21; i++) {
             lineStream >> starttime;
         }
     }
 
-    return std::stol(starttime);
+    long uptime = std::stol(starttime) / 1000;
+
+    return uptime;
 }
+
+//1750 (xdg-permission-) S 1492 1750 1750 0 -1 4194304 408 0 0 0 3 0 0 0 20 0 3 0 2266 250015744 1173 18446744073709551615 93912218628096 93912218713189 140735205759696 0 0 0 0 4096 0 0 0 0 17 1 0 0 0 0 0 93912218736400 93912218743008 93912241266688 140735205764062 140735205764096 140735205764096 140735205765078 0
