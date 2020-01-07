@@ -29,7 +29,7 @@ vector<Process>& System::Processes() {
     for (int& i : pids) {
         Process process(i);
 
-        processes_.push_back(process);
+        processes_.emplace_back(process);
     }
 
   sort(processes_.begin(), processes_.end(), compareProcess);

@@ -303,7 +303,7 @@ string LinuxParser::Ram(int pid) {
 
       while (linestream >> key >> value) {
         if (key == "VmSize:") {
-          memUsed = std::to_string(1000.00 / std::stol(value));
+          memUsed = std::to_string(std::stol(value) / 1024.00);
           return memUsed.substr(0, 6);
         }
       }

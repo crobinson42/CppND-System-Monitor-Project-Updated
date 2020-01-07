@@ -6,6 +6,24 @@
 
 #IncludeRegexTransform: 
 
+/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/linux_parser.cpp
+dirent.h
+-
+unistd.h
+-
+string
+-
+vector
+-
+sstream
+-
+iostream
+-
+regex
+-
+linux_parser.h
+/mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/linux_parser.h
+
 /mnt/hgfs/projects/udacity-cpp/CppND-System-Monitor-Project-Updated/src/system.cpp
 unistd.h
 -
